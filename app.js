@@ -1,8 +1,11 @@
+require('dotenv');
 const app = require('express')();
 const mongoose = require('mongoose');
 const Post = require('./models/Post.js');
 const cors = require('cors');
-mongoose.connect("mongodb+srv://mongo:123@cluster0.tcldz.mongodb.net/testdb?retryWrites=true&w=majority", { useNewUrlParser: true }, () => {
+const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.tcldz.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
+
+mongoose.connect(uri, { useNewUrlParser: true }, () => {
   console.log('connected');
 });
 
@@ -20,8 +23,9 @@ app.use(bodyParser.json());
 
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://mongo:123@cluster0.tcldz.mongodb.net/testdb?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
+const client = new MongoClient(uri, { useNewUrlParser: true }, (er) => {
+  console.log(er);
+});
 
 
 
